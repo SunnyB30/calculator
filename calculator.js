@@ -39,13 +39,16 @@ function getDot () {
             else if(userInput.length) {
                 userInput.push(button.value);
             }
+            else if (numberStorage.length) {
+                userInput.push("0");
+                userInput.push(button.value);
+            }
             appendDisplay(userInput.join(""));
         }
     });
 }
 
 function getOperator () {
-    console.log(userInput);
     if (userInput.at(-1) !== ".") {
         let buttons = document.querySelectorAll(".operator");
         buttons.forEach(button => {
