@@ -5,9 +5,12 @@ let numberStorage = [];
 
 
 getNumbers();
+getDot ();
 getOperator();
 getEquals();
 getClear(); 
+
+
 
 
 //Event listener functions
@@ -25,25 +28,44 @@ function getNumbers () {
 
 }
 
-function getOperator () {
-    let buttons = document.querySelectorAll(".operator");
-
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            operator.push(button.value);
-
-            if (userInput.length) {
-                numberStorage.push(userInput.join(""));
-
-                if (numberStorage.length > 1) {
-                    let result = operate(parseInt(numberStorage.at(-2)), parseInt(numberStorage.at(-1)), operator.at(-2));
-                    appendDisplay(result);
-                    numberStorage.push(result); 
-                }
+function getDot () {
+    let button = document.querySelector(".dot");
+    button.addEventListener('click', () => {
+        if (userInput.includes(button.value) === false) {
+            if (getDisplay() === "0") {
+                userInput.push(getDisplay())
+                userInput.push(button.value);
             }
-            userInput = [];
-        });
+            else if(userInput.length) {
+                userInput.push(button.value);
+            }
+            appendDisplay(userInput.join(""));
+        }
     });
+}
+
+function getOperator () {
+    console.log(userInput);
+    if (userInput.at(-1) !== ".") {
+        let buttons = document.querySelectorAll(".operator");
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                operator.push(button.value);
+    
+                if (userInput.length) {
+                    numberStorage.push(userInput.join(""));
+    
+                    if (numberStorage.length > 1) {
+                        let result = operate(parseInt(numberStorage.at(-2)), parseInt(numberStorage.at(-1)), operator.at(-2));
+                        appendDisplay(result);
+                        numberStorage.push(result); 
+                    }
+                }
+                userInput = [];
+            });
+        });
+    }
+    
 }
 
 function getEquals () {
@@ -81,6 +103,9 @@ function appendDisplay (update) {
     document.querySelector(".display").textContent = update; 
 }
 
+function getDisplay () {
+    return document.querySelector(".display").innerText; 
+}
 
 //calculation functions 
 
