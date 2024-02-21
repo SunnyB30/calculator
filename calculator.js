@@ -2,13 +2,12 @@ let userInput = [];
 let operator = [];
 let numberStorage = [];
 
-
-
 getNumbers();
 getDot ();
 getOperator();
 getEquals();
 getClear(); 
+getBackspace ();
 
 
 
@@ -23,6 +22,7 @@ function getNumbers () {
         button.addEventListener('click', () => {
             userInput.push(button.value);
             appendDisplay(userInput.join(""));
+            console.log(userInput);
         });
     });
 
@@ -59,7 +59,7 @@ function getOperator () {
                     numberStorage.push(userInput.join(""));
     
                     if (numberStorage.length > 1) {
-                        let result = operate(parseInt(numberStorage.at(-2)), parseInt(numberStorage.at(-1)), operator.at(-2));
+                        let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2));
                         appendDisplay(result);
                         numberStorage.push(result); 
                     }
@@ -80,7 +80,7 @@ function getEquals () {
 
             if(numberStorage.length > 1) {
                 
-                let result = operate(parseInt(numberStorage.at(-2)), parseInt(numberStorage.at(-1)), operator.at(-1));
+                let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1));
                 appendDisplay(result);
                 numberStorage.push(result);
             }
@@ -96,7 +96,23 @@ function getClear () {
         userInput = []; 
         operator = [];
         numberStorage = [];
-        appendDisplay("");
+        appendDisplay("0");
+    });
+}
+
+function getBackspace () {
+    let button = document.querySelector(".backspace");
+    button.addEventListener('click', () => {
+        if (getDisplay() !== "0") {
+            userInput.pop();
+            appendDisplay(userInput.join("")); 
+            
+            if (getDisplay() === "") {
+                appendDisplay("0");
+                userInput = [];
+            }
+        }
+        
     });
 }
 
