@@ -13,11 +13,6 @@ getChangeSign ();
 resetAfterInfinity (); 
 findLastOperation ();
 
-// i need to introduce a limit to number of numbers that can be typed/displayed. 
-//i need to round results when they get too large 
-
-
-
 //Event listener functions
 
 function getNumbers () {
@@ -36,9 +31,7 @@ function getNumbers () {
                     appendDisplay(userInput.join(""));
                 }
                 
-            }
-            
-            
+            }   
         });
     });
 
@@ -75,7 +68,7 @@ function getOperator () {
                     numberStorage.push(userInput.join(""));
     
                     if (numberStorage.length > 1) {
-                        let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2));
+                        let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2)))*1000000))/1000000;
                         if (result === Infinity) {
                             appendDisplay("You broke the universe. Well done");
                         }
@@ -101,7 +94,7 @@ function getEquals () {
 
             if(numberStorage.length > 1) {
                 
-                let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1));
+                let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1)))*1000000))/1000000;
                 if (result === Infinity) {
                     appendDisplay("You broke the universe. Well done");
                 }
