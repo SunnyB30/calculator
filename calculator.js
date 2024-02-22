@@ -20,9 +20,13 @@ function getNumbers () {
     
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            userInput.push(button.value);
-            appendDisplay(userInput.join(""));
-            console.log(userInput);
+            if (!(button.value === "0" && getDisplay() === "0"))
+            {
+                userInput.push(button.value);
+                appendDisplay(userInput.join(""));
+                console.log(userInput);
+            }
+        
         });
     });
 
