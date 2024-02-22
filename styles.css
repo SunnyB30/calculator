@@ -16,6 +16,7 @@ html, body {
     width: 470px; 
     height: 690px; 
     border: 2px black solid; 
+    background-color: black;
 }
 
 .display {
@@ -27,6 +28,8 @@ html, body {
     min-height: 100px;
     border: 2px black solid; 
     font-size: 100px; 
+    color: white;
+    border: 2px white solid;
     justify-content: end; 
     align-items: center;
     
@@ -50,15 +53,60 @@ html, body {
 .button {
     display: flex;
     justify-content: center;
-    align-items: center;
-    border: 2px black solid; 
+    align-items: center; 
     width: 90px;
     height: 90px;
-    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 50px;
+    font-weight: 700;
     border-radius: 50%;
+    border: none; 
 }
 
 .number, .dot, .changesign {
     color: white;
-    background-color: #3A3B3C ;
+    background-color: #29292c ;
+    
+}
+
+.clear {
+    color: #fd5661;
+    font-size: 40px;
+}
+
+.operator {
+    color:  rgb(1, 205, 205);
+}
+
+.clear, .backspace, .nan {
+    background-color:  #7b7a7a86;
+}
+
+.equals {
+    color: white; 
+    background-color: rgb(1, 205, 205);
+    font-size: 50px;
+}
+
+.backspace {
+    color: rgb(1, 205, 205);
+    font-size: 30px;
+}
+
+.number {
+    font-size: 45px;
+}
+
+.changesign {
+    font-size: 40px;
+}
+
+
+
+.nan {
+    font-size: 60px;
+}
+
+.percent {
+    font-size: 45px;
 }
