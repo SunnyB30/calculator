@@ -13,8 +13,7 @@ getChangeSign ();
 resetAfterInfinity (); 
 findLastOperation ();
 
-//found another issue where if I push a number after pressing equals, the result continues to operate. I need to only allow
-//it to operate when another operator button is pressed OR for the result to have its sign changed.
+// i need to introduce a limit to number of numbers that can be typed/displayed. 
 //i need to round results when they get too large 
 
 
@@ -29,13 +28,16 @@ function getNumbers () {
         button.addEventListener('click', () => {
             if (!(button.value === "0" && getDisplay() === "0"))
             {
-                console.log(lastOperation);
                 if (lastOperation === "=") {
                     numberStorage = [];
                 }
-                userInput.push(button.value);
-                appendDisplay(userInput.join(""));
+                if (userInput.length < 9) {
+                    userInput.push(button.value);
+                    appendDisplay(userInput.join(""));
+                }
+                
             }
+            
             
         });
     });
@@ -46,8 +48,8 @@ function getDot () {
     let button = document.querySelector(".dot");
     button.addEventListener('click', () => {
         if (userInput.includes(button.value) === false) {
-            if (getDisplay() === "0") {
-                userInput.push(getDisplay())
+            if (getDisplay() === "0" && lastOperation === "") {
+                userInput.push(getDisplay());
                 userInput.push(button.value);
             }
             else if(userInput.length) {
