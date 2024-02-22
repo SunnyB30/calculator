@@ -8,7 +8,7 @@ getOperator();
 getEquals();
 getClear(); 
 getBackspace ();
-
+resetAfterInfinity (); 
 
 
 
@@ -24,9 +24,7 @@ function getNumbers () {
             {
                 userInput.push(button.value);
                 appendDisplay(userInput.join(""));
-                console.log(userInput);
             }
-        
         });
     });
 
@@ -64,8 +62,13 @@ function getOperator () {
     
                     if (numberStorage.length > 1) {
                         let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2));
-                        appendDisplay(result);
-                        numberStorage.push(result); 
+                        if (result === Infinity) {
+                            appendDisplay("You broke the universe. Well done");
+                        }
+                        else {
+                            appendDisplay(result);
+                            numberStorage.push(result);
+                        }  
                     }
                 }
                 userInput = [];
@@ -85,8 +88,13 @@ function getEquals () {
             if(numberStorage.length > 1) {
                 
                 let result = operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1));
-                appendDisplay(result);
-                numberStorage.push(result);
+                if (result === Infinity) {
+                    appendDisplay("You broke the universe. Well done");
+                }
+                else {
+                    appendDisplay(result);
+                    numberStorage.push(result);
+                }  
             }
         }
         userInput = []; 
@@ -97,10 +105,7 @@ function getClear () {
 
     let button = document.querySelector(".clear");
     button.addEventListener('click', () => {
-        userInput = []; 
-        operator = [];
-        numberStorage = [];
-        appendDisplay("0");
+        clearAll ();
     });
 }
 
@@ -120,6 +125,19 @@ function getBackspace () {
     });
 }
 
+function resetAfterInfinity () {
+    let button = document.querySelector(".calculator");
+    
+    button.addEventListener('click', () => {
+
+        if (getDisplay() === "You broke the universe. Well done") {
+            clearAll (); 
+        }
+    }, {capture: true});
+    
+    
+}
+
 //display functions
 
 function appendDisplay (update) {
@@ -128,6 +146,13 @@ function appendDisplay (update) {
 
 function getDisplay () {
     return document.querySelector(".display").innerText; 
+}
+
+function clearAll () {
+        userInput = []; 
+        operator = [];
+        numberStorage = [];
+        appendDisplay("0");
 }
 
 //calculation functions 
@@ -164,7 +189,9 @@ function multiply (numA, numB) {
 }
 
 function divide (numA, numB) {
+
     return numA / numB;
+    
 }
 
 
