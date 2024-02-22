@@ -138,6 +138,7 @@ function resetAfterInfinity () {
     
 }
 
+
 //display functions
 
 function appendDisplay (update) {
@@ -170,6 +171,9 @@ function operate (numberA, numberB, sign) {
     else if (operator === "*") {
         return multiply(numberA, numberB);
     }
+    else if (operator === "%") {
+        return percentage (numberA, numberB);
+    }
     else {
         return divide (numberA, numberB);
     }
@@ -186,6 +190,10 @@ function subtract (numA, numB) {
 
 function multiply (numA, numB) {
     return numA * numB;
+}
+
+function percentage (numA, numB) {
+    return (numA / 100) * numB; 
 }
 
 function divide (numA, numB) {
