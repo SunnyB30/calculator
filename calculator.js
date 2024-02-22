@@ -8,6 +8,7 @@ getOperator();
 getEquals();
 getClear(); 
 getBackspace ();
+getChangeSign ();
 resetAfterInfinity (); 
 
 
@@ -125,6 +126,23 @@ function getBackspace () {
     });
 }
 
+function getChangeSign () {
+    let button = document.querySelector(".changesign");
+    button.addEventListener('click', () => {
+
+        if (userInput.includes("-")) {
+            userInput.shift();
+            appendDisplay(userInput.join(""));
+        }
+        else {
+            userInput.unshift("-"); 
+            appendDisplay(userInput.join(""));
+        }
+        
+
+    });
+}
+
 function resetAfterInfinity () {
     let button = document.querySelector(".calculator");
     
@@ -178,7 +196,6 @@ function operate (numberA, numberB, sign) {
         return divide (numberA, numberB);
     }
 }
-
 
 function add (numA, numB) {
     return numA + numB;
