@@ -1,6 +1,7 @@
 let userInput = []; 
 let operator = [];
 let numberStorage = [];
+let lastOperation = "";
 
 getNumbers();
 getDot ();
@@ -10,6 +11,11 @@ getClear();
 getBackspace ();
 getChangeSign ();
 resetAfterInfinity (); 
+findLastOperation ();
+
+//found another issue where if I push a number after pressing equals, the result continues to operate. I need to only allow
+//it to operate when another operator button is pressed OR for the result to have its sign changed.
+//i need to round results when they get too large 
 
 
 
@@ -23,9 +29,14 @@ function getNumbers () {
         button.addEventListener('click', () => {
             if (!(button.value === "0" && getDisplay() === "0"))
             {
+                console.log(lastOperation);
+                if (lastOperation === "=") {
+                    numberStorage = [];
+                }
                 userInput.push(button.value);
                 appendDisplay(userInput.join(""));
             }
+            
         });
     });
 
@@ -95,6 +106,7 @@ function getEquals () {
                 else {
                     appendDisplay(result);
                     numberStorage.push(result);
+                    
                 }  
             }
         }
@@ -107,6 +119,16 @@ function getClear () {
     let button = document.querySelector(".clear");
     button.addEventListener('click', () => {
         clearAll ();
+    });
+}
+
+function findLastOperation () {
+    let buttons = document.querySelectorAll(".nan");
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            lastOperation = button.value; 
+        });
     });
 }
 
@@ -134,12 +156,22 @@ function getChangeSign () {
             userInput.shift();
             appendDisplay(userInput.join(""));
         }
-        else {
+        
+        else if (lastOperation !== "=") {
             userInput.unshift("-"); 
             appendDisplay(userInput.join(""));
         }
-        
 
+        else if (getDisplay().includes("-")) {
+            
+            numberStorage.push(getDisplay().replace("-", ""));
+            appendDisplay(numberStorage.at(-1));
+        }
+        
+        else {
+            numberStorage.push("-" + numberStorage.at(-1));
+            appendDisplay(numberStorage.at(-1));
+        }
     });
 }
 
@@ -172,6 +204,7 @@ function clearAll () {
         operator = [];
         numberStorage = [];
         appendDisplay("0");
+        lastOperation = "";
 }
 
 //calculation functions 
