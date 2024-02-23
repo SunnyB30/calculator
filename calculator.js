@@ -25,8 +25,9 @@ function getNumbers () {
             {
                 if (lastOperation === "=") {
                     numberStorage = [];
+                    increaseFontsize ();
                 }
-                if (userInput.length < 9) {
+                if (userInput.length < 7) {
                     userInput.push(button.value);
                     appendDisplay(userInput.join(""));
                 }
@@ -63,18 +64,33 @@ function getOperator () {
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 operator.push(button.value);
-    
+                
+                if (button.value === "%") {
+                    changeBgPercentButton (true);
+                } 
+
                 if (userInput.length) {
                     numberStorage.push(userInput.join(""));
-    
+
                     if (numberStorage.length > 1) {
-                        let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2)))*1000000))/1000000;
+                        changeBgPercentButton (false);
+                        let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2)))*100000000))/100000000;
                         if (result === Infinity) {
                             appendDisplay("You broke the universe. Well done");
                         }
                         else {
-                            appendDisplay(result);
-                            numberStorage.push(result);
+                            if (result.toString().length > 7) {
+                                let n = result.toString().length; 
+                                parseFloat(result);
+                                reduceFontsize (n);
+                                appendDisplay(result);
+                                numberStorage.push(result);
+        
+                            }
+                            else {
+                                appendDisplay(result);
+                                numberStorage.push(result);
+                            }       
                         }  
                     }
                 }
@@ -93,15 +109,24 @@ function getEquals () {
             numberStorage.push(userInput.join(""));
 
             if(numberStorage.length > 1) {
-                
-                let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1)))*1000000))/1000000;
+                changeBgPercentButton (false);
+                let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1)))*100000000))/100000000;
                 if (result === Infinity) {
                     appendDisplay("You broke the universe. Well done");
                 }
                 else {
-                    appendDisplay(result);
-                    numberStorage.push(result);
-                    
+                    if (result.toString().length > 7) {
+                        let n = result.toString().length;
+                        parseFloat(result);
+                        reduceFontsize (n);
+                        appendDisplay(result);
+                        numberStorage.push(result);
+
+                    }
+                    else {
+                        appendDisplay(result);
+                        numberStorage.push(result);
+                    }              
                 }  
             }
         }
@@ -135,6 +160,7 @@ function getBackspace () {
             appendDisplay(userInput.join("")); 
             
             if (getDisplay() === "") {
+                increaseFontsize ();
                 appendDisplay("0");
                 userInput = [];
             }
@@ -200,6 +226,7 @@ function clearAll () {
         numberStorage = [];
         appendDisplay("0");
         lastOperation = "";
+        increaseFontsize ();
 }
 
 //calculation functions 
@@ -244,6 +271,30 @@ function percentage (numA, numB) {
 function divide (numA, numB) {
 
     return numA / numB;
+    
+}
+
+//other 
+
+function reduceFontsize (n) {
+    let reducingFactor = (1) /(parseInt(n/7)) * 100; 
+    let newreducingFactor = reducingFactor.toString() + "px";
+    console.log(newreducingFactor);
+    document.getElementById("display").style.fontSize = newreducingFactor;
+}
+
+function increaseFontsize () {
+    document.getElementById("display").style.fontSize = "100px";
+}
+
+function changeBgPercentButton (toggle) {
+    if (toggle === true) {
+        document.querySelector(".percent").style.color = "#39ff14"; 
+    }
+
+    else {
+        document.querySelector(".percent").style.color = "rgb(1, 205, 205)";
+    }
     
 }
 
