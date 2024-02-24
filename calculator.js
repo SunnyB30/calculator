@@ -74,9 +74,9 @@ function getOperator () {
 
                     if (numberStorage.length > 1) {
                         changeBgPercentButton (false);
-                        let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2)))*100000000))/100000000;
+                        let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-2)))*1000000))/1000000;
                         if (result === Infinity) {
-                            appendDisplay("You broke the universe. Well done");
+                            appendDisplay("∞");
                         }
                         else {
                             if (result.toString().length > 7) {
@@ -110,16 +110,16 @@ function getEquals () {
 
             if(numberStorage.length > 1) {
                 changeBgPercentButton (false);
-                let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1)))*100000000))/100000000;
+                let result = Math.round(((operate(parseFloat(numberStorage.at(-2)), parseFloat(numberStorage.at(-1)), operator.at(-1)))*1000000))/1000000;
                 if (result === Infinity) {
-                    appendDisplay("You broke the universe. Well done");
+                    appendDisplay("∞");
                 }
                 else {
                     if (result.toString().length > 7) {
                         let n = result.toString().length;
-                        parseFloat(result);
                         reduceFontsize (n);
                         appendDisplay(result);
+                        parseFloat(result);
                         numberStorage.push(result);
 
                     }
@@ -201,7 +201,7 @@ function resetAfterInfinity () {
     
     button.addEventListener('click', () => {
 
-        if (getDisplay() === "You broke the universe. Well done") {
+        if (getDisplay() === "∞") {
             clearAll (); 
         }
     }, {capture: true});
@@ -277,7 +277,8 @@ function divide (numA, numB) {
 //other 
 
 function reduceFontsize (n) {
-    let reducingFactor = (1) /(parseInt(n/7)) * 100; 
+    let reducingFactor = (1) /(parseFloat(n/7)) * 100; 
+    console.log(reducingFactor);
     let newreducingFactor = reducingFactor.toString() + "px";
     console.log(newreducingFactor);
     document.getElementById("display").style.fontSize = newreducingFactor;
