@@ -65,11 +65,12 @@ function getOperator () {
             button.addEventListener('click', () => {
                 operator.push(button.value);
                 
-                if (button.value === "%") {
+                if (button.value === "%" && (userInput.length || numberStorage.length)) {
                     changeBgPercentButton (true);
                 } 
 
                 if (userInput.length) {
+                    
                     numberStorage.push(userInput.join(""));
 
                     if (numberStorage.length > 1) {
@@ -278,9 +279,7 @@ function divide (numA, numB) {
 
 function reduceFontsize (n) {
     let reducingFactor = (1) /(parseFloat(n/7)) * 100; 
-    console.log(reducingFactor);
     let newreducingFactor = reducingFactor.toString() + "px";
-    console.log(newreducingFactor);
     document.getElementById("display").style.fontSize = newreducingFactor;
 }
 
