@@ -19,28 +19,42 @@ function getNumbers () {
 
     let buttons = document.querySelectorAll(".number");
     
+    function numberButtonClick(button) {
+        if (!(button.value === "0" && getDisplay() === "0"))
+        {
+            if (lastOperation === "=") {
+                numberStorage = [];
+                increaseFontsize ();
+            }
+            if (userInput.length < 7) {
+                userInput.push(button.value);
+                appendDisplay(userInput.join(""));
+            }
+            
+        } 
+    }
+              
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            if (!(button.value === "0" && getDisplay() === "0"))
-            {
-                if (lastOperation === "=") {
-                    numberStorage = [];
-                    increaseFontsize ();
-                }
-                if (userInput.length < 7) {
-                    userInput.push(button.value);
-                    appendDisplay(userInput.join(""));
-                }
-                
-            }   
+            numberButtonClick(button);
         });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        const button = Array.from(buttons).find(btn => btn.value === key);
+        if (button) {
+            numberButtonClick(button);  
+            button.focus();       
+        }
     });
 
 }
 
 function getDot () {
     let button = document.querySelector(".dot");
-    button.addEventListener('click', () => {
+
+    function handleDecimal () {
         if (userInput.includes(button.value) === false) {
             if (getDisplay() === "0" && lastOperation === "") {
                 userInput.push(getDisplay());
@@ -55,14 +69,27 @@ function getDot () {
             }
             appendDisplay(userInput.join(""));
         }
+    }
+
+    button.addEventListener('click', () => {
+        handleDecimal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if(event.key === ".") {
+            event.preventDefault(); 
+            handleDecimal();
+            button.focus();
+        }
     });
 }
 
 function getOperator () {
     if (userInput.at(-1) !== ".") {
         let buttons = document.querySelectorAll(".operator");
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
+        
+            function operatorClick (button) {
+
                 operator.push(button.value);
                 
                 if (button.value === "%" && (userInput.length || numberStorage.length)) {
@@ -96,8 +123,22 @@ function getOperator () {
                     }
                 }
                 userInput = [];
+            }
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    operatorClick(button); 
+                });
             });
-        });
+
+            document.addEventListener('keydown', (event) => {
+                const key = event.key;
+                const button = Array.from(buttons).find(btn => btn.value === key);
+                if (button) {
+                    operatorClick(button);
+                    button.focus();
+                }
+            });
+        
     }
     
 }
@@ -105,7 +146,7 @@ function getOperator () {
 function getEquals () {
     let button = document.querySelector(".equals");
 
-    button.addEventListener('click', () => {
+    function equalClick () {
         if (userInput.length) {
             numberStorage.push(userInput.join(""));
 
@@ -131,15 +172,36 @@ function getEquals () {
                 }  
             }
         }
-        userInput = []; 
+        userInput = [];  
+    }
+        button.addEventListener('click', () => {
+            equalClick ();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            equalClick ();
+            button.focus();
+        }
+        
     });
 }
 
 function getClear () {
 
     let button = document.querySelector(".clear");
+    
     button.addEventListener('click', () => {
         clearAll ();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Delete") {
+            event.preventDefault(); 
+            clearAll(); 
+            button.focus();
+        }
     });
 }
 
@@ -155,7 +217,8 @@ function findLastOperation () {
 
 function getBackspace () {
     let button = document.querySelector(".backspace");
-    button.addEventListener('click', () => {
+    
+    function handleBackSpace () {
         if (getDisplay() !== "0") {
             userInput.pop();
             appendDisplay(userInput.join("")); 
@@ -166,14 +229,27 @@ function getBackspace () {
                 userInput = [];
             }
         }
-        
+    }
+
+    button.addEventListener('click', () => {
+        handleBackSpace(); 
     });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Backspace") {
+            event.preventDefault(); 
+            handleBackSpace();
+            button.focus(); 
+        }
+    }); 
+
+
 }
 
 function getChangeSign () {
     let button = document.querySelector(".changesign");
-    button.addEventListener('click', () => {
 
+    function changeSign () {
         if (userInput.includes("-")) {
             userInput.shift();
             appendDisplay(userInput.join(""));
@@ -193,6 +269,18 @@ function getChangeSign () {
         else {
             numberStorage.push("-" + numberStorage.at(-1));
             appendDisplay(numberStorage.at(-1));
+        }
+    }
+
+    button.addEventListener('click', () => {
+        changeSign (); 
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "c") {
+            event.preventDefault(); 
+            changeSign();
+            button.focus(); 
         }
     });
 }
@@ -297,7 +385,6 @@ function changeBgPercentButton (toggle) {
     }
     
 }
-
 
 
 
